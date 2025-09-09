@@ -1,0 +1,21 @@
+Create an engaging social media post based on this video transcription from a third-party perspective. The post should be:
+
+- Professional but conversational
+- 300-500 words maximum (suitable for LinkedIn premium or X subscriptions)
+- Include 2-3 relevant hashtags
+- Start with a compelling hook that captures the video's main value
+- Include enough key insights and takeaways that readers get substantial value without watching
+- Present information as "This video explores..." or "The speaker discusses..." rather than first-person
+- Include specific examples, quotes, or data points from the transcription
+- End with intrigue that makes readers want to watch for deeper insights
+- Use emojis sparingly but effectively (1-2 max)
+
+Write the post as if you're curating and sharing valuable content with your professional network. Focus on being a thoughtful content curator rather than the original creator.
+
+Here is the transcription:
+
+---
+{transcription_text}
+---
+
+Write only the LinkedIn post content, nothing else.

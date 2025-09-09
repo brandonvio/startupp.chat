@@ -1,0 +1,31 @@
+Analyze this Bluesky post and determine if it meets all requirements. Check:
+
+1. **Character Count**: Must be 290 characters or less
+2. **Engagement**: Must be interesting and shareable 
+3. **Hashtags**: Must have at least 2 relevant hashtags
+4. **Quality**: Must be well-written and compelling
+
+POST TO ANALYZE:
+---
+{post_content}
+---
+
+REQUIREMENTS:
+- Maximum 290 characters TOTAL
+- At least 2 relevant hashtags
+- Interesting and engaging content
+- Third-party perspective (informative, not promotional)
+
+You MUST respond in this EXACT format (no extra text):
+
+MEETS_REQUIREMENTS: YES
+CHARACTER_COUNT: 245
+HASHTAG_COUNT: 2
+IMPROVEMENT_GUIDANCE: APPROVED
+
+OR if requirements are not met:
+
+MEETS_REQUIREMENTS: NO
+CHARACTER_COUNT: 301
+HASHTAG_COUNT: 1
+IMPROVEMENT_GUIDANCE: Too long and needs more hashtags

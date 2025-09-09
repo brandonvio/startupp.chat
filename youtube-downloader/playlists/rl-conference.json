@@ -1,0 +1,459 @@
+{
+  "channelHandle": "@RL-conference",
+  "channelId": "UCMwwl7isl-DAYY7ZInoX_XA",
+  "totalVideos": 11,
+  "fetchedAt": "2025-08-25T06:06:58.633Z",
+  "videos": [
+    {
+      "id": "c8f6lMg3gNg",
+      "title": "Joelle Pineau: Beyond Bellman's Legacy: Rethinking What we Value",
+      "description": "Beyond Bellman's Legacy: Rethinking What we Value\nKeynote from RLC 2025",
+      "publishedAt": "2025-08-24T02:01:58Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT51M",
+      "viewCount": 87,
+      "likeCount": 4,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/c8f6lMg3gNg/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/c8f6lMg3gNg/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/c8f6lMg3gNg/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/c8f6lMg3gNg/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/c8f6lMg3gNg/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=c8f6lMg3gNg"
+    },
+    {
+      "id": "hMEViRcF7o0",
+      "title": "Dale Schuurmans: Language Models and Computation",
+      "description": "Language Models and Computation: Keynote from RLC 2025",
+      "publishedAt": "2025-08-24T02:01:38Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H3M52S",
+      "viewCount": 77,
+      "likeCount": 11,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/hMEViRcF7o0/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/hMEViRcF7o0/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/hMEViRcF7o0/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/hMEViRcF7o0/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/hMEViRcF7o0/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=hMEViRcF7o0"
+    },
+    {
+      "id": "dBA3ukUBLNc",
+      "title": "Michael Littman: Efficient RL/AI via Interaction and Teaching: The Importance of Theory",
+      "description": "Efficient RL/AI via Interaction and Teaching: The Importance of Theory",
+      "publishedAt": "2025-08-24T01:58:33Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT49M51S",
+      "viewCount": 38,
+      "likeCount": 2,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/dBA3ukUBLNc/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/dBA3ukUBLNc/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/dBA3ukUBLNc/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/dBA3ukUBLNc/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/dBA3ukUBLNc/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=dBA3ukUBLNc"
+    },
+    {
+      "id": "dEweRR7tQqg",
+      "title": "Rich Sutton: The OaK Architecture: A Vision of SuperIntelligence from Experience",
+      "description": "The OaK Architecture: A Vision of SuperIntelligence from Experience",
+      "publishedAt": "2025-08-24T01:59:39Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H1M3S",
+      "viewCount": 135,
+      "likeCount": 16,
+      "commentCount": 1,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/dEweRR7tQqg/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/dEweRR7tQqg/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/dEweRR7tQqg/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/dEweRR7tQqg/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/dEweRR7tQqg/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=dEweRR7tQqg"
+    },
+    {
+      "id": "vLA7t4tjhfE",
+      "title": "Peter Dayan: The Marriage of Natural and Engineered Reinforcement Learning",
+      "description": "Keynote at RLC 2025!",
+      "publishedAt": "2025-08-24T01:56:55Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT54M12S",
+      "viewCount": 43,
+      "likeCount": 4,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/vLA7t4tjhfE/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/vLA7t4tjhfE/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/vLA7t4tjhfE/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/vLA7t4tjhfE/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/vLA7t4tjhfE/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=vLA7t4tjhfE"
+    },
+    {
+      "id": "Woj56riDb24",
+      "title": "Emma Brunskill - Accelerating Science and Data-Driven Decision-Making in Noisy Worlds - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:55:33Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT47M51S",
+      "viewCount": 819,
+      "likeCount": 13,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Woj56riDb24/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Woj56riDb24/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Woj56riDb24/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Woj56riDb24/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Woj56riDb24/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=Woj56riDb24"
+    },
+    {
+      "id": "5FfkvHjrOtk",
+      "title": "Finale Doshi-Velez - People are a Feature (Not a Bug) - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:55:31Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT57M16S",
+      "viewCount": 945,
+      "likeCount": 12,
+      "commentCount": 0,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/5FfkvHjrOtk/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/5FfkvHjrOtk/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/5FfkvHjrOtk/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/5FfkvHjrOtk/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/5FfkvHjrOtk/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=5FfkvHjrOtk"
+    },
+    {
+      "id": "-gQNM7rAWP0",
+      "title": "Andy Barto - In the Beginning ML was RL - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:55:26Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H6M48S",
+      "viewCount": 4946,
+      "likeCount": 168,
+      "commentCount": 6,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/-gQNM7rAWP0/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/-gQNM7rAWP0/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/-gQNM7rAWP0/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/-gQNM7rAWP0/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/-gQNM7rAWP0/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=-gQNM7rAWP0"
+    },
+    {
+      "id": "5Dw4OoJK9Qw",
+      "title": "Peter Stone - Practical Reinforcement Learning: Lessons from 30 Years of Research - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:56:01Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H2M52S",
+      "viewCount": 2767,
+      "likeCount": 64,
+      "commentCount": 1,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/5Dw4OoJK9Qw/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/5Dw4OoJK9Qw/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/5Dw4OoJK9Qw/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/5Dw4OoJK9Qw/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/5Dw4OoJK9Qw/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=5Dw4OoJK9Qw"
+    },
+    {
+      "id": "pkpJMNjvgXw",
+      "title": "David Silver - Towards Superhuman Intelligence - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:55:32Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H3M13S",
+      "viewCount": 13014,
+      "likeCount": 483,
+      "commentCount": 11,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/pkpJMNjvgXw/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/pkpJMNjvgXw/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/pkpJMNjvgXw/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/pkpJMNjvgXw/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/pkpJMNjvgXw/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=pkpJMNjvgXw"
+    },
+    {
+      "id": "Az5BoT7lCYo",
+      "title": "Sergey Levine - Reinforcement Learning in the Age of Foundation Models - RLC 2024",
+      "description": "Edited by Gor Baghdasaryan",
+      "publishedAt": "2024-10-01T16:55:42Z",
+      "channelTitle": "Reinforcement Learning Conference",
+      "tags": [],
+      "categoryId": "22",
+      "duration": "PT1H5M13S",
+      "viewCount": 6550,
+      "likeCount": 181,
+      "commentCount": 2,
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Az5BoT7lCYo/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Az5BoT7lCYo/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Az5BoT7lCYo/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Az5BoT7lCYo/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Az5BoT7lCYo/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "url": "https://www.youtube.com/watch?v=Az5BoT7lCYo"
+    }
+  ]
+}

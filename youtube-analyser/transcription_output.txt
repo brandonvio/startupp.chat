@@ -1,0 +1,74 @@
+=== TRANSCRIPTION WITH SPEAKER DIARIZATION (GPU-PROCESSED) ===
+
+--- SPEAKER_01 ---
+[3.05s -> 13.90s] I have to ask you, I almost forgot about one of the many, and I would say one of the most incredible things recently that somehow didn't yet get enough attention is Alpha Evolve.
+[14.48s -> 19.71s] We talked about evolution a little bit, but it's the Google DeepMind system that evolves algorithms.
+[20.51s -> 25.36s] Are these kinds of evolution-like techniques promising as a component of future superintelligence systems?
+[25.38s -> 31.30s] So for people who don't know, it's kind of, I don't know if it's fair to say it's LLM-guided
+[32.33s -> 33.49s] evolution search.
+[33.81s -> 38.86s] Evolution algorithms are doing the search and LLMs are telling you where.
+
+--- SPEAKER_00 ---
+[38.94s -> 39.80s] Yes, exactly.
+[40.24s -> 50.49s] LLMs are proposing some possible solutions and then you use evolutionary computing on top to find some novel part of the search space.
+[50.51s -> 52.84s] Actually, I think it's an example of
+[52.82s -> 60.42s] very promising directions where you combine LLMs or foundation models with other computational techniques.
+[60.45s -> 72.34s] Evolutionary methods is one, but you could also imagine Monte Carlo tree search, basically many types of search algorithms or reasoning algorithms sort of on top of or using the foundation models as a basis.
+[72.80s -> 80.31s] So I actually think there's quite a lot of interesting things to be discovered probably with these sort of hybrid systems, let's call them.
+
+--- SPEAKER_01 ---
+[80.29s -> 82.57s] But not to romanticize evolution.
+[82.71s -> 83.81s] Yeah, I'm only human.
+[84.13s -> 89.16s] But you think there's some value in whatever that mechanism is because we already talked about natural systems.
+[89.80s -> 96.69s] Do you think where there's a lot of low hanging fruit of us understanding being being able to model
+[96.67s -> 107.21s] being able to simulate evolution and then using that whatever we understand about that nature-inspired mechanism to then do surge better and better and better.
+
+--- SPEAKER_00 ---
+[107.59s -> 119.20s] So if you think about again breaking down the sort of systems we've built to their really fundamental core, you've got like the model of the underlying dynamics of the system,
+[119.19s -> 131.87s] And then if you want to discover something new, something novel that hasn't been seen before, then you need some kind of search process on top to take you to a novel region of the search space.
+[132.58s -> 134.76s] And you can do that in a number of ways.
+[134.82s -> 136.49s] Evolutionary computing is one.
+[136.47s -> 155.96s] With alpha go we just use Monte Carlo tree search right and that's what found move thirty seven then you kind of never seen before strategy in go and so that's how you can go beyond potentially what is already know so the model can model everything that you currently know about right all the data that you currently have but then how do you go beyond that.
+[155.94s -> 158.52s] So that starts to speak about the ideas of creativity.
+[158.56s -> 162.25s] How can these systems create something new, discover something new?
+[162.53s -> 168.39s] Obviously, this is super relevant for scientific discovery or pushing science and medicine forward, which we want to do with these systems.
+[168.85s -> 178.63s] And you can actually bolt on some fairly simple search systems on top of these models and get you into a new region of space.
+[178.95s -> 184.61s] Of course, you also have to make sure that you're not searching that space totally randomly, it would be too big.
+[184.59s -> 190.26s] So you have to have some objective function that you're trying to optimize and hill climb towards and that guides that search.
+
+--- SPEAKER_01 ---
+[190.68s -> 200.76s] But there's some mechanism of evolution that are interesting, maybe in the space of programs, but then the space of programs is an extremely important space because you can probably generalize to everything.
+[201.66s -> 203.65s] But, you know, for example, mutation.
+[204.39s -> 208.94s] So it's not just Monte Carlo tree search where it's like a search.
+[210.00s -> 216.39s] You could every once in a while combine things, like components of a thing.
+[216.65s -> 222.46s] So then what evolution is really good at is not just the natural selection.
+[222.44s -> 228.01s] it's combining things and building increasingly complex hierarchical systems.
+[228.15s -> 233.30s] So that component is super interesting, especially like with alpha evolve in this basic program.
+
+--- SPEAKER_00 ---
+[233.42s -> 234.25s] Yeah, exactly.
+[234.31s -> 241.30s] So you can get a bit of an extra property out of evolutionary systems, which is some new emergent capability may come about.
+[241.36s -> 244.06s] But of course, like to happen with life,
+[244.04s -> 256.93s] Interestingly, with naive sort of traditional evolutionary computing methods without LLMs and the modern AI, the problem with them, they were very well studied in the 90s and early 2000s and some promising results.
+[256.96s -> 265.58s] But the problem was they could never work out how to evolve new properties, new emerging properties, you always had a sort of subset of the properties that you put into the system.
+[265.56s -> 271.20s] But maybe if we combine them with these foundation models, perhaps we can overcome that limitation.
+[271.47s -> 276.83s] Obviously, natural evolution clearly did, because it did evolve new capabilities, right?
+[276.89s -> 278.67s] So bacteria to where we are now.
+[279.03s -> 291.33s] So clearly that it must be possible with evolutionary systems to generate new patterns, going back to the first thing we talked about, and new capabilities and emergent properties.
+[291.67s -> 294.35s] And maybe we're on the cusp of discovering how to do that.
+
+--- SPEAKER_01 ---
+[295.23s -> 298.41s] Yeah, listen, alpha evolve is one of the coolest things I've ever seen.
+[298.55s -> 303.89s] I've, on my desk at home, you know, most of my time is spent behind that computer is just programming.
+[304.93s -> 315.50s] And next to the three screens is a skull of a tectalic, which is one of the early organisms that crawled out of the water onto land.
+[316.02s -> 319.25s] And I just kind of watch that little guy.
+[319.29s -> 324.59s] It's like, whatever the competition mechanism of evolution is,
+[325.31s -> 326.72s] It's quite incredible.
+[327.08s -> 328.62s] It's truly, truly incredible.
+[329.02s -> 336.74s] Now, whether that's exactly the thing we need to do to do our search, but never dismiss the power of nature with what it did here.
+
+--- SPEAKER_00 ---
+[336.89s -> 345.43s] Yeah, and it's amazing, which is a relatively simple algorithm, right, effectively, and it can generate all of this immense complexity.
+[345.41s -> 349.26s] emerges, obviously running over, you know, 4 billion years of time.
+[349.62s -> 359.84s] But it's, you know, you can think about that as, again, a process, a search process that ran over the physics substrate of the universe for a long amount of computational time.
+[360.20s -> 363.59s] But then it generated all this incredible, rich diversity.

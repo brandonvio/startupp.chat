@@ -1,0 +1,33 @@
+Create an engaging Bluesky post based on this video analysis. 
+
+CRITICAL REQUIREMENTS (you MUST follow ALL of these):
+- Include the name of the person Lex is interviewing and what they brought to the table.
+- EXACTLY 2 hashtags (not 1, not 3, exactly 2)
+- Maximum 290 characters TOTAL
+- Must be engaging and shareable
+- Third-party perspective (informative, not promotional)
+- Focus on the most compelling insight
+- Use 1-2 emojis maximum
+
+EXAMPLE FORMAT:
+"Fascinating insight on [topic]: [key takeaway]. This changes how we think about [concept]. 🤔 #TechTrends #Innovation"
+
+Here is the video analysis:
+---
+{analysis_content}
+---
+
+Previous feedback to improve:
+---
+{improvement_guidance}
+---
+
+Write ONLY the post text with exactly 2 hashtags. No URLs, no extra text, no explanations.
+
+---
+Examples of quality posts:
+#1 "Sam Altman notes training a 100T-parameter model now costs $2.6B—but with efficiency doubling every 16 months, it could fall to $40M by 2028. A future where scale rivals biology is closer than we think. 🤯 #AI #FutureTech"
+#2 "Lisa Feldman Barrett explains suffering isn’t inevitable—it comes from caring about what we can’t change. Reappraise the world, and the brain bakes its own happiness cookie. 🌱 #Mindset #Wellbeing"
+#3 "Yann LeCun argues one set of principles—deep learning—can unify vision, language, and action. The next leap? A single transformer handling all three. 🤖 #AIUnification #MachineLearning"
+#4 "Paul Krugman highlights AI’s labor shock: a $1,000 UBI could cushion workers, but the deeper issue is data ownership. Without regulation, a few giants capture all the gains. #Economics #AI"
+#5 "Jack Dorsey reflects on Bitcoin’s anonymous creator: Satoshi’s disappearance removed bias, letting the protocol speak for itself. That neutrality fuels decentralization and trust. 🔍 #Bitcoin #CryptoCulture"

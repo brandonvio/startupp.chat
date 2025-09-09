@@ -1,0 +1,33 @@
+Please provide a comprehensive analysis of the following video transcription. Include the following sections:
+
+## Summary
+Provide a concise overview of the main content and key points discussed.
+
+## Key Topics
+List and briefly explain the main topics covered in the video.
+
+## Important Insights
+Highlight any notable insights, conclusions, or takeaways from the content.
+
+## Structure Analysis
+Analyze how the content is organized and presented.
+
+## Tone and Style
+Describe the tone, style, and delivery approach used in the video.
+
+## Target Audience
+Identify who the intended audience likely is based on the content and presentation style.
+
+## Notable Quotes
+Include any particularly memorable or significant quotes from the transcription.
+
+## Action Items (if applicable)
+List any actionable advice, recommendations, or next steps mentioned.
+
+Here is the transcription to analyze:
+
+---
+{transcription_text}
+---
+
+Please provide your analysis in a well-structured, professional format.
