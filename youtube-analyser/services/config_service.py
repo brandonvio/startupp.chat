@@ -31,6 +31,14 @@ class ConfigService:
                 'max_tokens': 2048,
                 'enable_analysis': True
             },
+            'minio': {
+                'endpoint': 'localhost:9000',
+                'access_key': 'minioadmin',
+                'secret_key': 'minioadmin',
+                'bucket_name': 'videos',
+                'secure': False,
+                'enabled': False
+            },
             'logging': {
                 'level': 'INFO',
                 'format': '{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}'
@@ -51,6 +59,12 @@ class ConfigService:
             'OLLAMA_TEMPERATURE': ('analysis', 'temperature'),
             'OLLAMA_MAX_TOKENS': ('analysis', 'max_tokens'),
             'ENABLE_ANALYSIS': ('analysis', 'enable_analysis'),
+            'MINIO_ENDPOINT': ('minio', 'endpoint'),
+            'MINIO_ACCESS_KEY': ('minio', 'access_key'),
+            'MINIO_SECRET_KEY': ('minio', 'secret_key'),
+            'MINIO_BUCKET': ('minio', 'bucket_name'),
+            'MINIO_SECURE': ('minio', 'secure'),
+            'MINIO_ENABLED': ('minio', 'enabled'),
             'LOG_LEVEL': ('logging', 'level')
         }
         
@@ -81,7 +95,10 @@ class ConfigService:
                             continue
                     elif key == 'enable_analysis':
                         value = value.lower() in ('true', '1', 'yes', 'on')
-                
+                elif section == 'minio':
+                    if key in ('secure', 'enabled'):
+                        value = value.lower() in ('true', '1', 'yes', 'on')
+
                 self._config[section][key] = value
                 logger.debug(f"Loaded config override from {env_var}: {key} = {value}")
     
@@ -120,7 +137,11 @@ class ConfigService:
     def get_logging_config(self) -> Dict[str, Any]:
         """Get logging configuration."""
         return self._config['logging']
-    
+
+    def get_minio_config(self) -> Dict[str, Any]:
+        """Get Minio storage configuration."""
+        return self._config['minio']
+
     def set(self, section: str, key: str, value: Any):
         """
         Set configuration value.

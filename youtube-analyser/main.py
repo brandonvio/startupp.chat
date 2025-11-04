@@ -60,7 +60,10 @@ from dotenv import load_dotenv
 from services.minio_service import MinIOService
 from services.audio_service import AudioService
 from services.video_service import VideoService
-from services.transcription_service import TranscriptionService, PersonaTranscriptionService
+from services.transcription_service import (
+    TranscriptionService,
+    PersonaTranscriptionService,
+)
 from services.analysis_service import OllamaAnalysisService
 from services.bluesky_service import BlueskyService
 from services.bluesky_post_builder import BlueskyPostBuilder

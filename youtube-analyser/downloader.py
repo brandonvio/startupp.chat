@@ -1,78 +1,107 @@
 #!/usr/bin/env python3
 """
-simple_yt_fetch.py
-Download a YouTube video and its metadata JSON into ./downloads/<videoid>/.
+downloader.py
+Download a YouTube video using the YouTubeDownloadService.
+Automatically uploads to Minio storage.
 
 Usage:
-  python simple_yt_fetch.py dQw4w9WgXcQ
+  python downloader.py <VIDEO_ID>
+
+Example:
+  python downloader.py dQw4w9WgXcQ
 """
 
+import os
 import sys
-import json
-from pathlib import Path
-import yt_dlp
+from loguru import logger
+from dotenv import load_dotenv
+
+from services.youtube_download_service import YouTubeDownloadService
+from services.minio_service import MinIOService
 
 
-def progress(d):
-    if d.get("status") == "downloading":
-        pct = (d.get("_percent_str") or "").strip()
-        spd = (d.get("_speed_str") or "").strip()
-        eta = (d.get("_eta_str") or "").strip()
-        print(f"\r{pct:>6} {spd:>10} ETA {eta:>6}", end="", flush=True)
-    elif d.get("status") == "finished":
-        print("\nMerging…", flush=True)
+def get_minio_config() -> dict:
+    """Load MinIO configuration from environment variables."""
+    load_dotenv()
+
+    required_vars = [
+        "MINIO_ENDPOINT",
+        "MINIO_ACCESS_KEY",
+        "MINIO_SECRET_KEY",
+        "MINIO_BUCKET",
+    ]
+    missing_vars = [var for var in required_vars if not os.getenv(var)]
+
+    if missing_vars:
+        raise ValueError(
+            f"Missing required environment variables: {', '.join(missing_vars)}"
+        )
+
+    secure = os.getenv("MINIO_SECURE", "false").lower() in ("true", "1", "yes", "on")
+    region = os.getenv("MINIO_REGION")
+
+    return {
+        "endpoint": os.getenv("MINIO_ENDPOINT"),
+        "access_key": os.getenv("MINIO_ACCESS_KEY"),
+        "secret_key": os.getenv("MINIO_SECRET_KEY"),
+        "bucket_name": os.getenv("MINIO_BUCKET"),
+        "secure": secure,
+        "region": region,
+    }
+
+
+def init_minio_service() -> MinIOService:
+    """Initialize Minio service from environment variables."""
+    minio_config = get_minio_config()
+
+    minio_service = MinIOService(
+        endpoint=minio_config['endpoint'],
+        access_key=minio_config['access_key'],
+        secret_key=minio_config['secret_key'],
+        bucket_name=minio_config['bucket_name'],
+        secure=minio_config['secure'],
+        region=minio_config['region']
+    )
+    logger.success(f"✅ Connected to Minio at {minio_config['endpoint']}")
+    return minio_service
 
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python simple_yt_fetch.py <VIDEO_ID>")
+        print("Usage: python downloader.py <VIDEO_ID>")
         sys.exit(1)
 
-    vid = sys.argv[1].strip()
-    url = f"https://www.youtube.com/watch?v={vid}"
+    video_id = sys.argv[1].strip()
 
-    out_dir = Path("downloads") / vid
-    out_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        # Initialize Minio
+        logger.info("Loading MinIO configuration from .env...")
+        minio_service = init_minio_service()
 
-    # Force filenames to <videoid>.<ext> in ./downloads/<videoid>/
-    base = str(out_dir / vid)
+        # Initialize service
+        service = YouTubeDownloadService(
+            minio_service=minio_service,
+            default_output_path="downloads",
+            default_format="bv*+ba/best"
+        )
 
-    ydl_opts = {
-        # Best video+audio, remux to MP4 when needed
-        "format": "bv*+ba/best",
-        "merge_output_format": "mp4",
-        "outtmpl": {"default": base + ".%(ext)s"},
-        # Keep it lean: only the media file (no thumbs, subs, etc.)
-        "writesubtitles": False,
-        "writeautomaticsub": False,
-        "writethumbnail": False,
-        "writeinfojson": False,  # we'll write our own <videoid>.json
-        "skip_download": False,
-        "progress_hooks": [progress],
-        "retries": 5,
-        "fragment_retries": 5,
-        "continuedl": True,
-        "overwrites": False,
-        "quiet": False,
-        "no_warnings": False,
-        "concurrent_fragment_downloads": 5,
-    }
+        result = service.download_video(video_id=video_id)
 
-    # Download the video, capture metadata, then write metadata JSON ourselves
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
+        if result.get("skipped"):
+            logger.info(f"Video {video_id} already exists in Minio - skipped download")
+        else:
+            logger.success(f"✅ Download and upload complete for {video_id}!")
 
-    # Persist a clean metadata JSON as <videoid>.json alongside the video
-    meta_path = out_dir / f"{vid}.json"
-    # Use ensure_ascii=False to preserve unicode; indent for readability
-    with meta_path.open("w", encoding="utf-8") as f:
-        json.dump(info, f, ensure_ascii=False, indent=2, default=str)
+        return 0
 
-    # Print the final media path (mp4 or best available ext)
-    # ydl.prepare_filename(info) would give us the actual name, but we forced base.
-    print(f"Saved video to: {next(out_dir.glob(vid + '.*'))}")
-    print(f"Saved metadata to: {meta_path}")
+    except ValueError as e:
+        logger.error(f"Configuration error: {str(e)}")
+        logger.info("Please set the required environment variables in .env file")
+        return 1
+    except Exception as e:
+        logger.error(f"Download failed: {str(e)}")
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
