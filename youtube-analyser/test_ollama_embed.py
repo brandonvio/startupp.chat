@@ -10,7 +10,7 @@ import numpy as np
 import json
 import re
 import hashlib
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any
 from datetime import datetime
 from dotenv import load_dotenv
 from loguru import logger
@@ -296,7 +296,7 @@ class OllamaEmbeddingTester:
             )
 
             # Log detailed operation result status
-            logger.info(f"📊 Qdrant upsert operation result:")
+            logger.info("📊 Qdrant upsert operation result:")
             logger.info(
                 f"   🔹 Status: {operation_result.status if hasattr(operation_result, 'status') else 'Unknown'}"
             )
@@ -305,7 +305,7 @@ class OllamaEmbeddingTester:
             )
 
             if operation_result:
-                logger.success(f"💾 Successfully stored embedding in Qdrant:")
+                logger.success("💾 Successfully stored embedding in Qdrant:")
                 logger.info(f"   🔹 Point ID: {point_id}")
                 logger.info(
                     f"   🔹 Text preview: '{text[:50]}{'...' if len(text) > 50 else ''}'"
@@ -315,7 +315,7 @@ class OllamaEmbeddingTester:
                 return point_id
             else:
                 logger.error(
-                    f"❌ FATAL: Qdrant upsert operation failed - operation_result is falsy"
+                    "❌ FATAL: Qdrant upsert operation failed - operation_result is falsy"
                 )
                 raise SystemExit("Qdrant upsert operation failed")
         except Exception as e:
@@ -376,7 +376,7 @@ class OllamaEmbeddingTester:
                 }
                 similar_embeddings.append(result_data)
 
-            logger.success(f"🔍 Qdrant similarity search completed:")
+            logger.success("🔍 Qdrant similarity search completed:")
             logger.info(f"   🔹 Query vector dimension: {len(query_embedding)}")
             logger.info(f"   🔹 Results found: {len(similar_embeddings)}")
             logger.info(f"   🔹 Search limit: {limit}")
@@ -590,7 +590,8 @@ class OllamaEmbeddingTester:
 
             # Search for similar embeddings
             similar_embeddings = self.search_similar_embeddings(
-                search_result["embedding"], limit=5  # Increased limit for more results
+                search_result["embedding"],
+                limit=5,  # Increased limit for more results
             )
 
             # Display results with detailed logging
@@ -658,7 +659,7 @@ class OllamaEmbeddingTester:
                 embedding = response["embeddings"][0]
                 embedding_length = len(embedding)
 
-                logger.success(f"Embedding generated successfully")
+                logger.success("Embedding generated successfully")
                 logger.info(f"   Vector dimension: {embedding_length}")
                 logger.info(f"   Generation time: {end_time - start_time:.2f}s")
 
@@ -757,7 +758,7 @@ class OllamaEmbeddingTester:
         total_start = time.time()
 
         for i, text in enumerate(texts):
-            logger.info(f"Processing text {i+1}/{len(texts)}")
+            logger.info(f"Processing text {i + 1}/{len(texts)}")
             result = await self.test_single_embedding(text)
             results.append(result)
 
@@ -785,7 +786,7 @@ class OllamaEmbeddingTester:
                 "throughput_per_second": len(texts) / total_time,
             }
 
-            logger.success(f"Batch processing completed")
+            logger.success("Batch processing completed")
             logger.info(f"   Success rate: {len(successful_results)}/{len(texts)}")
             logger.info(f"   Total time: {total_time:.2f}s")
             logger.info(
@@ -1080,7 +1081,7 @@ class OllamaEmbeddingTester:
             text = item["text"]
             custom_metadata = item["expected_metadata"]
 
-            logger.info(f"Processing text {i+1}: '{text[:50]}...'")
+            logger.info(f"Processing text {i + 1}: '{text[:50]}...'")
             result = await self.test_single_embedding(text)
 
             if result["success"]:
@@ -1161,7 +1162,7 @@ class OllamaEmbeddingTester:
         short_embeddings = self.search_by_metadata_only({"word_count": {"lte": 5}})
         url_embeddings = self.search_by_metadata_only({"has_urls": True})
 
-        logger.info(f"📊 Analysis results:")
+        logger.info("📊 Analysis results:")
         logger.info(f"  - High tech content: {len(tech_embeddings)} embeddings")
         logger.info(f"  - Short texts: {len(short_embeddings)} embeddings")
         logger.info(f"  - Contains URLs: {len(url_embeddings)} embeddings")
@@ -1235,8 +1236,8 @@ class OllamaEmbeddingTester:
         pattern_results = {}
         for i, pattern in enumerate(patterns):
             results = self.search_by_metadata_only(pattern, limit=20)
-            pattern_results[f"pattern_{i+1}"] = len(results)
-            logger.info(f"Pattern {i+1} {pattern}: {len(results)} results")
+            pattern_results[f"pattern_{i + 1}"] = len(results)
+            logger.info(f"Pattern {i + 1} {pattern}: {len(results)} results")
 
         # Log advanced query test results
         self.log_test_result(
@@ -1343,7 +1344,7 @@ async def run_comprehensive_tests():
             tester.collection_name
         )
         final_count = final_collection_info.points_count or 0
-        logger.success(f"📊 Final Qdrant collection status:")
+        logger.success("📊 Final Qdrant collection status:")
         logger.info(f"   🔹 Collection: {tester.collection_name}")
         logger.info(f"   🔹 Total embeddings stored: {final_count}")
         logger.info(

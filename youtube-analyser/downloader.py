@@ -55,12 +55,12 @@ def init_minio_service() -> MinIOService:
     minio_config = get_minio_config()
 
     minio_service = MinIOService(
-        endpoint=minio_config['endpoint'],
-        access_key=minio_config['access_key'],
-        secret_key=minio_config['secret_key'],
-        bucket_name=minio_config['bucket_name'],
-        secure=minio_config['secure'],
-        region=minio_config['region']
+        endpoint=minio_config["endpoint"],
+        access_key=minio_config["access_key"],
+        secret_key=minio_config["secret_key"],
+        bucket_name=minio_config["bucket_name"],
+        secure=minio_config["secure"],
+        region=minio_config["region"],
     )
     logger.success(f"✅ Connected to Minio at {minio_config['endpoint']}")
     return minio_service
@@ -82,7 +82,7 @@ def main():
         service = YouTubeDownloadService(
             minio_service=minio_service,
             default_output_path="downloads",
-            default_format="bv*+ba/best"
+            default_format="bv*+ba/best",
         )
 
         result = service.download_video(video_id=video_id)

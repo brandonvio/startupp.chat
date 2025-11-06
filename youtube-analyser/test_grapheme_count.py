@@ -12,6 +12,7 @@ print(f"Length (characters): {len(text)}")
 # Test different grapheme counting methods
 try:
     import grapheme
+
     grapheme_count = grapheme.length(text)
     print(f"Graphemes (grapheme library): {grapheme_count}")
 except ImportError:
@@ -19,14 +20,15 @@ except ImportError:
 
 # Fallback method
 import unicodedata
-normalized = unicodedata.normalize('NFC', text)
+
+normalized = unicodedata.normalize("NFC", text)
 print(f"Normalized length: {len(normalized)}")
 
 # Check for special characters
 special_chars = []
 for i, char in enumerate(text):
     if ord(char) > 127:  # Non-ASCII
-        special_chars.append((i, char, ord(char), unicodedata.name(char, 'UNKNOWN')))
+        special_chars.append((i, char, ord(char), unicodedata.name(char, "UNKNOWN")))
 
 print(f"\nSpecial characters found: {len(special_chars)}")
 for pos, char, code, name in special_chars[:10]:  # Show first 10

@@ -157,7 +157,7 @@ class VideoProcessor:
                 f"WAV file uploaded successfully to {wav_full_path} ({wav_size:,} bytes)"
             )
         else:
-            logger.error(f"Failed to upload WAV file to MinIO")
+            logger.error("Failed to upload WAV file to MinIO")
 
         return success
 
@@ -212,7 +212,7 @@ class VideoProcessor:
             )
             return transcription_output_path
         else:
-            logger.error(f"Failed to upload TXT file to MinIO")
+            logger.error("Failed to upload TXT file to MinIO")
             return None
 
     async def generate_analysis(
@@ -270,7 +270,7 @@ class VideoProcessor:
                 f"Analysis file uploaded successfully to {analysis_full_path} ({analysis_size:,} bytes)"
             )
         else:
-            logger.error(f"Failed to upload analysis file to MinIO")
+            logger.error("Failed to upload analysis file to MinIO")
 
         return success
 
@@ -332,7 +332,7 @@ class VideoProcessor:
                 f"LinkedIn post file uploaded successfully to {linkedin_full_path} ({linkedin_size:,} bytes)"
             )
         else:
-            logger.error(f"Failed to upload LinkedIn post file to MinIO")
+            logger.error("Failed to upload LinkedIn post file to MinIO")
 
         return success
 
@@ -403,7 +403,7 @@ class VideoProcessor:
         )
 
         if not success:
-            logger.error(f"Failed to upload Bluesky post file to MinIO")
+            logger.error("Failed to upload Bluesky post file to MinIO")
             return False
 
         logger.success(
@@ -518,7 +518,7 @@ class VideoProcessor:
                 f"Thumbnail uploaded successfully to {thumbnail_full_path} ({thumbnail_size:,} bytes)"
             )
         else:
-            logger.error(f"Failed to upload thumbnail to MinIO")
+            logger.error("Failed to upload thumbnail to MinIO")
 
         return success
 
@@ -548,7 +548,7 @@ class VideoProcessor:
             if not self.minio.retrieve_to_file(
                 folder, thumbnail_filename, temp_thumbnail_path
             ):
-                logger.error(f"Failed to retrieve thumbnail for small video generation")
+                logger.error("Failed to retrieve thumbnail for small video generation")
                 return None
 
         # Step 3: Generate small video using VideoService
@@ -587,7 +587,7 @@ class VideoProcessor:
             )
             return temp_small_video_path
         else:
-            logger.error(f"Failed to upload small video to MinIO")
+            logger.error("Failed to upload small video to MinIO")
             return None
 
     async def process_video(self, minio_path: str, force: bool = False) -> bool:

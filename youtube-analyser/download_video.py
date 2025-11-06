@@ -15,7 +15,6 @@ Examples:
 import sys
 import os
 import argparse
-from pathlib import Path
 from loguru import logger
 from dotenv import load_dotenv
 
@@ -58,12 +57,12 @@ def init_minio_service() -> MinIOService:
     minio_config = get_minio_config()
 
     minio_service = MinIOService(
-        endpoint=minio_config['endpoint'],
-        access_key=minio_config['access_key'],
-        secret_key=minio_config['secret_key'],
-        bucket_name=minio_config['bucket_name'],
-        secure=minio_config['secure'],
-        region=minio_config['region']
+        endpoint=minio_config["endpoint"],
+        access_key=minio_config["access_key"],
+        secret_key=minio_config["secret_key"],
+        bucket_name=minio_config["bucket_name"],
+        secure=minio_config["secure"],
+        region=minio_config["region"],
     )
     logger.success(f"✅ Connected to Minio at {minio_config['endpoint']}")
     return minio_service
@@ -85,30 +84,27 @@ Format Examples:
   bestvideo[height<=720]+bestaudio  720p or lower
   bestvideo[height<=1080]+bestaudio 1080p or lower
   bestaudio                       Audio only
-        """
+        """,
     )
 
-    parser.add_argument(
-        "video_id",
-        help="YouTube video ID (e.g., dQw4w9WgXcQ)"
-    )
+    parser.add_argument("video_id", help="YouTube video ID (e.g., dQw4w9WgXcQ)")
 
     parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         default="downloads",
-        help="Output directory (default: downloads)"
+        help="Output directory (default: downloads)",
     )
 
     parser.add_argument(
-        "-f", "--format",
+        "-f",
+        "--format",
         default="bv*+ba/best",
-        help="Format selector for yt-dlp (default: bv*+ba/best)"
+        help="Format selector for yt-dlp (default: bv*+ba/best)",
     )
 
     parser.add_argument(
-        "--no-metadata",
-        action="store_true",
-        help="Don't save metadata JSON file"
+        "--no-metadata", action="store_true", help="Don't save metadata JSON file"
     )
 
     args = parser.parse_args()
@@ -127,7 +123,7 @@ Format Examples:
         service = YouTubeDownloadService(
             minio_service=minio_service,
             default_output_path=args.output,
-            default_format=args.format
+            default_format=args.format,
         )
 
         logger.info(f"Downloading video: {args.video_id}")
@@ -140,14 +136,14 @@ Format Examples:
             video_id=args.video_id,
             output_path=args.output,
             format_selector=args.format,
-            save_metadata=not args.no_metadata
+            save_metadata=not args.no_metadata,
         )
 
-        logger.success(f"\nDownload complete!")
+        logger.success("\nDownload complete!")
         if not result.get("skipped"):
-            if 'video_path' in result:
+            if "video_path" in result:
                 logger.success(f"Video: {result['video_path']}")
-            if 'metadata_path' in result:
+            if "metadata_path" in result:
                 logger.success(f"Metadata: {result['metadata_path']}")
 
         return 0

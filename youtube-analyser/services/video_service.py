@@ -493,7 +493,7 @@ class VideoService:
             logger.success(f"Found thumbnail: {thumbnail_url} ({width}x{height})")
 
             # Download thumbnail
-            logger.info(f"Downloading thumbnail...")
+            logger.info("Downloading thumbnail...")
             response = requests.get(thumbnail_url)
             response.raise_for_status()
 

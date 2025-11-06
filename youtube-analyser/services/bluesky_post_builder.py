@@ -8,7 +8,7 @@ from .bluesky_service import BlueskyService
 class BlueskyPostBuilder:
     """
     Simplified service for posting to Bluesky with local media files.
-    
+
     This service only handles posting with already available local files.
     All data retrieval and generation should be done before calling this service.
     """
@@ -29,7 +29,7 @@ class BlueskyPostBuilder:
         thumbnail_path: Optional[str] = None,
         video_title: str = "Video",
         youtube_url: Optional[str] = None,
-        use_youtube_facets: bool = False
+        use_youtube_facets: bool = False,
     ) -> bool:
         """
         Post content to Bluesky with media or YouTube facets.
@@ -63,24 +63,20 @@ class BlueskyPostBuilder:
             if use_youtube_facets and youtube_url:
                 logger.info(f"Posting to Bluesky with YouTube facets: {youtube_url}")
                 success = self.bluesky_service.post_with_youtube_facet(
-                    text=text,
-                    youtube_url=youtube_url
+                    text=text, youtube_url=youtube_url
                 )
             # Priority 2: Video upload
             elif video_path and os.path.exists(video_path):
                 logger.info(f"Posting to Bluesky with video: {video_path}")
                 success = self.bluesky_service.post_with_video(
-                    text=text,
-                    video_path=video_path
+                    text=text, video_path=video_path
                 )
             # Priority 3: Thumbnail image
             elif thumbnail_path and os.path.exists(thumbnail_path):
                 logger.info(f"Posting to Bluesky with thumbnail: {thumbnail_path}")
                 alt_text = f"Thumbnail for {video_title}"
                 success = self.bluesky_service.post_with_image(
-                    text=text,
-                    image_path=thumbnail_path,
-                    alt_text=alt_text
+                    text=text, image_path=thumbnail_path, alt_text=alt_text
                 )
             # Priority 4: Text-only fallback
             else:
@@ -91,9 +87,13 @@ class BlueskyPostBuilder:
                 logger.success("Successfully posted to Bluesky!")
                 return True
             else:
-                logger.error("Failed to post to Bluesky - posting method returned False")
+                logger.error(
+                    "Failed to post to Bluesky - posting method returned False"
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"Exception occurred while posting to Bluesky: {type(e).__name__}: {e}")
+            logger.error(
+                f"Exception occurred while posting to Bluesky: {type(e).__name__}: {e}"
+            )
             return False

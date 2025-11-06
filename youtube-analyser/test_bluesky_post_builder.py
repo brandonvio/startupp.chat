@@ -75,7 +75,7 @@ async def test_bluesky_post_builder():
 
     try:
         # Initialize services
-        print(f"🔧 Initializing services...")
+        print("🔧 Initializing services...")
         minio_service = MinIOService(
             endpoint=minio_endpoint,
             access_key=minio_access_key,
@@ -116,10 +116,10 @@ async def test_bluesky_post_builder():
             return False
 
         video_metadata = json.loads(json_data.decode("utf-8"))
-        print(f"✅ Retrieved video metadata")
+        print("✅ Retrieved video metadata")
 
         # Step 3: Extract high-resolution thumbnail URL
-        print(f"🔍 Extracting thumbnail URL...")
+        print("🔍 Extracting thumbnail URL...")
         thumbnails = video_metadata.get("thumbnails", [])
 
         # Find the highest resolution thumbnail (maxresdefault.webp)
@@ -141,7 +141,7 @@ async def test_bluesky_post_builder():
         )
 
         # Step 4: Download thumbnail
-        print(f"📥 Downloading thumbnail...")
+        print("📥 Downloading thumbnail...")
         response = requests.get(thumbnail_url)
         response.raise_for_status()
 
@@ -155,7 +155,7 @@ async def test_bluesky_post_builder():
         )
 
         # Step 5: Generate Bluesky post using analysis service
-        print(f"🤖 Generating Bluesky post...")
+        print("🤖 Generating Bluesky post...")
         bluesky_post_content = await analysis_service.generate_bluesky_post(
             video_id, analysis_content
         )
@@ -164,7 +164,7 @@ async def test_bluesky_post_builder():
         print(f"📝 Post content: {bluesky_post_content}")
 
         # Step 6: Authenticate with Bluesky
-        print(f"🔐 Authenticating with Bluesky...")
+        print("🔐 Authenticating with Bluesky...")
         if not bluesky_service.authenticate():
             print("❌ Failed to authenticate with Bluesky")
             return False
@@ -172,7 +172,7 @@ async def test_bluesky_post_builder():
         print(f"✅ Authenticated with Bluesky as {bluesky_handle}")
 
         # Step 7: Post to Bluesky with image
-        print(f"📤 Posting to Bluesky...")
+        print("📤 Posting to Bluesky...")
         success = bluesky_service.post_with_image(
             text=bluesky_post_content,
             image_path=thumbnail_path,
@@ -192,8 +192,8 @@ async def test_bluesky_post_builder():
         except Exception as e:
             print(f"⚠️ Warning: Could not delete temporary file {thumbnail_path}: {e}")
 
-        print(f"\n🎉 Bluesky post workflow completed successfully!")
-        print(f"📊 Summary:")
+        print("\n🎉 Bluesky post workflow completed successfully!")
+        print("📊 Summary:")
         print(f"   • Video ID: {video_id}")
         print(f"   • Video Title: {video_metadata.get('title', 'Unknown')}")
         print(f"   • Post Length: {len(bluesky_post_content)} characters")

@@ -260,7 +260,8 @@ if __name__ == "__main__":
     try:
         # Process the audio file
         tagged_transcription = transcribe_and_diarize_whisperx(
-            audio_file_path, language="auto"  # or specify "en", "es", etc.
+            audio_file_path,
+            language="auto",  # or specify "en", "es", etc.
         )
 
         # Display results

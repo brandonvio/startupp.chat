@@ -1,7 +1,7 @@
 import os
 import io
 from datetime import datetime
-from typing import Optional, BinaryIO, Dict, Any
+from typing import Optional, Dict, Any
 from minio import Minio
 from minio.error import S3Error
 

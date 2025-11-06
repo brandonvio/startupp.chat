@@ -1,5 +1,4 @@
 from typing import Optional, List, Union, BinaryIO, Dict, Any
-import io
 import mimetypes
 import re
 import time
@@ -70,15 +69,17 @@ class BlueskyService:
         try:
             # Try using the grapheme library if available
             import grapheme
+
             return grapheme.length(text)
         except ImportError:
             # Fallback: use a simple approximation
             # This isn't perfect but handles basic cases
             import unicodedata
+
             # Remove combining characters and count
-            normalized = unicodedata.normalize('NFC', text)
+            normalized = unicodedata.normalize("NFC", text)
             return len(normalized)
-    
+
     def _truncate_to_grapheme_limit(self, text: str, limit: int = 299) -> str:
         """
         Truncate text to fit within Bluesky's grapheme limit.
@@ -86,18 +87,18 @@ class BlueskyService:
         """
         if self._count_graphemes(text) <= limit:
             return text
-        
+
         # Simple truncation - could be improved to preserve hashtags
         truncated = text
         while self._count_graphemes(truncated) > limit:
             truncated = truncated[:-1]
-        
+
         # Add ellipsis if truncated
         if truncated != text:
             while self._count_graphemes(truncated + "...") > limit:
                 truncated = truncated[:-1]
             truncated += "..."
-        
+
         return truncated
 
     def _create_facets(self, text: str) -> List[dict]:
@@ -249,10 +250,12 @@ class BlueskyService:
             # Create post text and ensure it fits within grapheme limit
             original_text = text or ""
             post_text = self._truncate_to_grapheme_limit(original_text)
-            
+
             if post_text != original_text:
-                logger.warning(f"Post text truncated from {len(original_text)} to {len(post_text)} characters")
-            
+                logger.warning(
+                    f"Post text truncated from {len(original_text)} to {len(post_text)} characters"
+                )
+
             grapheme_count = self._count_graphemes(post_text)
             logger.info(
                 f"Preparing Bluesky post ({len(post_text)} characters, {grapheme_count} graphemes, {len(media) if media else 0} media attachments)"
@@ -272,7 +275,9 @@ class BlueskyService:
                 embeds = []
                 for i, media_item in enumerate(media):
                     try:
-                        logger.debug(f"Processing media attachment {i+1}/{len(media)}")
+                        logger.debug(
+                            f"Processing media attachment {i + 1}/{len(media)}"
+                        )
                         blob = self._upload_media(media_item)
 
                         # Get alt text if provided
@@ -285,11 +290,11 @@ class BlueskyService:
                             image=blob, alt=alt_text
                         )
                         embeds.append(embed)
-                        logger.debug(f"Successfully processed media attachment {i+1}")
+                        logger.debug(f"Successfully processed media attachment {i + 1}")
 
                     except Exception as e:
                         logger.error(
-                            f"Failed to process media item {i+1}/{len(media)}: {type(e).__name__}: {e}"
+                            f"Failed to process media item {i + 1}/{len(media)}: {type(e).__name__}: {e}"
                         )
                         raise
 
@@ -355,20 +360,21 @@ class BlueskyService:
         try:
             # Extract video ID from URL
             import re
+
             video_id = None
-            
+
             # Try different YouTube URL formats
             patterns = [
-                r'(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]+)',
-                r'youtube\.com/embed/([a-zA-Z0-9_-]+)',
+                r"(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]+)",
+                r"youtube\.com/embed/([a-zA-Z0-9_-]+)",
             ]
-            
+
             for pattern in patterns:
                 match = re.search(pattern, youtube_url)
                 if match:
                     video_id = match.group(1)
                     break
-            
+
             if not video_id:
                 logger.warning(f"Could not extract video ID from URL: {youtube_url}")
                 return {
@@ -376,19 +382,19 @@ class BlueskyService:
                     "title": "YouTube Video",
                     "description": "Watch this video on YouTube",
                 }
-            
+
             # Try to get video info (simplified approach)
             title = f"YouTube Video ({video_id})"
             description = "Watch this video on YouTube"
             thumb_url = f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
-            
+
             return {
                 "uri": youtube_url,
                 "title": title,
                 "description": description,
                 "thumb_url": thumb_url,
             }
-            
+
         except Exception as e:
             logger.warning(f"Failed to extract YouTube info: {e}")
             return {
@@ -400,7 +406,7 @@ class BlueskyService:
     def post_with_youtube_facet(self, text: str, youtube_url: str) -> bool:
         """
         Post text with a YouTube URL using Bluesky external embed for rich preview.
-        
+
         This creates a rich card preview for the YouTube video using app.bsky.embed.external.
 
         Args:
@@ -416,12 +422,16 @@ class BlueskyService:
             # Ensure text fits within grapheme limit
             original_text = text
             post_text = self._truncate_to_grapheme_limit(text)
-            
+
             if post_text != original_text:
-                logger.warning(f"Post text truncated from {len(original_text)} to {len(post_text)} characters")
-            
+                logger.warning(
+                    f"Post text truncated from {len(original_text)} to {len(post_text)} characters"
+                )
+
             grapheme_count = self._count_graphemes(post_text)
-            logger.info(f"Preparing YouTube external embed post ({grapheme_count} graphemes, {len(post_text)} characters)")
+            logger.info(
+                f"Preparing YouTube external embed post ({grapheme_count} graphemes, {len(post_text)} characters)"
+            )
 
             # Extract YouTube info
             youtube_info = self._extract_youtube_info(youtube_url)
@@ -431,16 +441,19 @@ class BlueskyService:
             thumb_blob = None
             if "thumb_url" in youtube_info:
                 try:
-                    logger.debug(f"Downloading YouTube thumbnail: {youtube_info['thumb_url']}")
+                    logger.debug(
+                        f"Downloading YouTube thumbnail: {youtube_info['thumb_url']}"
+                    )
                     import requests
+
                     thumb_response = requests.get(youtube_info["thumb_url"], timeout=10)
                     thumb_response.raise_for_status()
-                    
+
                     # Upload thumbnail to Bluesky
                     thumb_data = thumb_response.content
                     thumb_blob = self._upload_media(thumb_data)
-                    logger.success(f"Successfully uploaded YouTube thumbnail")
-                    
+                    logger.success("Successfully uploaded YouTube thumbnail")
+
                 except Exception as e:
                     logger.warning(f"Failed to upload YouTube thumbnail: {e}")
 
@@ -450,7 +463,7 @@ class BlueskyService:
                 "title": youtube_info["title"],
                 "description": youtube_info["description"],
             }
-            
+
             if thumb_blob:
                 external_embed["thumb"] = thumb_blob
 
@@ -460,18 +473,18 @@ class BlueskyService:
 
             # Create the post with external embed and facets
             user_did = self.client.me.did
-            
+
             post_data = {
                 "$type": "app.bsky.feed.post",
                 "text": post_text,
                 "embed": {
                     "$type": "app.bsky.embed.external",
-                    "external": external_embed
+                    "external": external_embed,
                 },
                 "createdAt": datetime.now().isoformat() + "Z",
                 "langs": ["en"],
             }
-            
+
             # Add facets if any were created
             if facets:
                 post_data["facets"] = facets
@@ -479,30 +492,30 @@ class BlueskyService:
 
             logger.info("Sending YouTube external embed post to Bluesky...")
             logger.debug(f"Post data: {post_data}")
-            
+
             try:
                 response = self.client.com.atproto.repo.create_record(
                     {
                         "repo": user_did,
-                        "collection": "app.bsky.feed.post", 
+                        "collection": "app.bsky.feed.post",
                         "record": post_data,
                     }
                 )
-                
+
                 logger.success("Successfully posted YouTube external embed to Bluesky")
                 logger.debug(f"Create record response: {response}")
-                
+
                 # Log response details
-                if hasattr(response, 'uri'):
+                if hasattr(response, "uri"):
                     logger.info(f"Post URI: {response.uri}")
-                if hasattr(response, 'cid'):
+                if hasattr(response, "cid"):
                     logger.info(f"Post CID: {response.cid}")
-                    
+
                 # Try to extract the post URL for easy access
-                if hasattr(response, 'uri'):
+                if hasattr(response, "uri"):
                     # Convert AT-URI to web URL
                     # Format: at://did:plc:.../app.bsky.feed.post/...
-                    uri_parts = response.uri.split('/')
+                    uri_parts = response.uri.split("/")
                     if len(uri_parts) >= 5:
                         did = uri_parts[2]
                         rkey = uri_parts[-1]
@@ -515,22 +528,26 @@ class BlueskyService:
                         except Exception as e:
                             logger.debug(f"Could not resolve handle: {e}")
                             logger.info(f"🔗 Post AT-URI: {response.uri}")
-                
+
                 return True
-                
+
             except Exception as create_error:
-                logger.error(f"Failed to create external embed post: {type(create_error).__name__}: {create_error}")
-                
+                logger.error(
+                    f"Failed to create external embed post: {type(create_error).__name__}: {create_error}"
+                )
+
                 # Log detailed error info
-                if hasattr(create_error, 'response'):
+                if hasattr(create_error, "response"):
                     logger.error(f"Error response: {create_error.response}")
-                if hasattr(create_error, 'status_code'):
+                if hasattr(create_error, "status_code"):
                     logger.error(f"Status code: {create_error.status_code}")
-                    
+
                 raise
 
         except Exception as e:
-            logger.error(f"Failed to post YouTube external embed to Bluesky: {type(e).__name__}: {e}")
+            logger.error(
+                f"Failed to post YouTube external embed to Bluesky: {type(e).__name__}: {e}"
+            )
             return False
 
     def _debug_ssl_context(self) -> None:
@@ -618,15 +635,17 @@ class BlueskyService:
                 # Get user's PDS information from session
                 session = self.client.com.atproto.server.get_session()
                 # Extract PDS DID from the error message format: should be "did:web:leccinum.us-west.host.bsky.network"
-                pds_host = session.did_doc.service[0].service_endpoint.replace('https://', '')
+                pds_host = session.did_doc.service[0].service_endpoint.replace(
+                    "https://", ""
+                )
                 pds_did = f"did:web:{pds_host}"
                 logger.debug(f"User PDS DID: {pds_did}")
-                
+
                 # Create service auth token with PDS DID as audience
                 service_auth_response = self.client.com.atproto.server.get_service_auth(
                     {
                         "aud": pds_did,  # Use PDS DID as audience
-                        "lxm": "com.atproto.repo.uploadBlob", 
+                        "lxm": "com.atproto.repo.uploadBlob",
                         "exp": int(time.time()) + 30 * 60,  # 30 minutes
                     }
                 )
@@ -670,7 +689,9 @@ class BlueskyService:
                     logger.success("✓ Video upload successful")
             except requests.exceptions.SSLError as e:
                 logger.warning(f"SSL error with requests, trying curl fallback: {e}")
-                upload_response = self._try_curl_upload(upload_url, params, headers, video_path, file_size)
+                upload_response = self._try_curl_upload(
+                    upload_url, params, headers, video_path, file_size
+                )
             except Exception as e:
                 logger.error(f"Upload failed: {type(e).__name__}: {e}")
                 raise
@@ -686,7 +707,9 @@ class BlueskyService:
             # Poll for completion if needed
             if not blob:
                 if not job_id:
-                    raise RuntimeError("No jobId returned from video upload and no immediate blob")
+                    raise RuntimeError(
+                        "No jobId returned from video upload and no immediate blob"
+                    )
                 blob = self._poll_for_completion(job_id, token)
 
             logger.success("Video upload completed successfully")
@@ -696,7 +719,6 @@ class BlueskyService:
             logger.error(f"Video upload failed: {type(e).__name__}: {e}")
             logger.error(f"Error details: {str(e)}")
             return None
-
 
     def _try_curl_upload(self, upload_url, params, headers, video_path, file_size):
         """Try using curl as a fallback."""
@@ -725,11 +747,15 @@ class BlueskyService:
             cmd.extend(["-H", f"{key}: {value}"])
 
         # Execute curl
-        logger.debug(f"Executing curl command: {' '.join(cmd[:5])} [... headers omitted ...]")
+        logger.debug(
+            f"Executing curl command: {' '.join(cmd[:5])} [... headers omitted ...]"
+        )
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=350)
         if result.returncode != 0:
             logger.error(f"Curl stderr: {result.stderr}")
-            raise RuntimeError(f"curl failed with exit code {result.returncode}: {result.stderr}")
+            raise RuntimeError(
+                f"curl failed with exit code {result.returncode}: {result.stderr}"
+            )
 
         # Debug the response
         logger.debug(f"Curl stdout: {result.stdout}")
@@ -743,20 +769,20 @@ class BlueskyService:
             logger.error(f"Failed to parse curl response as JSON: {e}")
             logger.error(f"Raw response: {result.stdout}")
             raise RuntimeError(f"Invalid JSON response from video upload: {e}")
-        
+
         # Create a simple response-like object with the JSON data
         class CurlResponse:
             def __init__(self, data, status_code=200):
                 self._data = data
                 self.status_code = status_code
-            
+
             def json(self):
                 return self._data
-            
+
             def raise_for_status(self):
                 if self.status_code >= 400:
                     raise RuntimeError(f"HTTP {self.status_code}")
-        
+
         return CurlResponse(response_data)
 
     def _poll_for_completion(self, job_id: str, token: str) -> Optional[Dict[str, Any]]:
@@ -768,7 +794,7 @@ class BlueskyService:
         while time.time() - poll_start < poll_timeout:
             try:
                 response = requests.get(
-                    f"https://video.bsky.app/xrpc/app.bsky.video.getJobStatus",
+                    "https://video.bsky.app/xrpc/app.bsky.video.getJobStatus",
                     params={"jobId": job_id},
                     headers=headers,
                     timeout=30,
@@ -816,12 +842,16 @@ class BlueskyService:
             # Ensure text fits within grapheme limit
             original_text = text
             post_text = self._truncate_to_grapheme_limit(text)
-            
+
             if post_text != original_text:
-                logger.warning(f"Post text truncated from {len(original_text)} to {len(post_text)} characters")
-            
+                logger.warning(
+                    f"Post text truncated from {len(original_text)} to {len(post_text)} characters"
+                )
+
             grapheme_count = self._count_graphemes(post_text)
-            logger.info(f"Post text: {grapheme_count} graphemes, {len(post_text)} characters")
+            logger.info(
+                f"Post text: {grapheme_count} graphemes, {len(post_text)} characters"
+            )
 
             # Create facets
             facets = self._create_facets(post_text)

@@ -42,7 +42,6 @@ import argparse
 import asyncio
 from pathlib import Path
 from loguru import logger
-from typing import Optional
 from dotenv import load_dotenv
 
 from services.minio_service import MinIOService
@@ -212,14 +211,14 @@ async def convert_mp4_to_wav_and_transcribe(
 
     # Check if MP4 file exists in MinIO
     full_object_path = f"{folder}/{mp4_filename}" if folder else mp4_filename
-    logger.info(f"Checking if file exists in MinIO...")
+    logger.info("Checking if file exists in MinIO...")
     logger.info(f"  Bucket: {minio_service.bucket_name}")
     logger.info(f"  Full object path: {full_object_path}")
     logger.info(f"  Folder: '{folder}'")
     logger.info(f"  Filename: '{mp4_filename}'")
 
     if not minio_service.object_exists(folder, mp4_filename):
-        logger.error(f"MP4 file not found in MinIO!")
+        logger.error("MP4 file not found in MinIO!")
         logger.error(f"  Searched for: {full_object_path}")
         logger.error(f"  In bucket: {minio_service.bucket_name}")
         logger.error(f"  Using folder: '{folder}' and filename: '{mp4_filename}'")
@@ -250,13 +249,13 @@ async def convert_mp4_to_wav_and_transcribe(
 
         try:
             # Step 1: Download MP4 from MinIO (always needed for processing)
-            logger.info(f"Downloading MP4 from MinIO...")
+            logger.info("Downloading MP4 from MinIO...")
             logger.info(f"  Source: {full_object_path}")
             logger.info(f"  Destination: {temp_mp4_path}")
             logger.info(f"  Bucket: {minio_service.bucket_name}")
 
             if not minio_service.retrieve_to_file(folder, mp4_filename, temp_mp4_path):
-                logger.error(f"Failed to download MP4 file from MinIO!")
+                logger.error("Failed to download MP4 file from MinIO!")
                 logger.error(f"  Attempted to download: {full_object_path}")
                 logger.error(f"  From bucket: {minio_service.bucket_name}")
                 logger.error(f"  To local path: {temp_mp4_path}")
@@ -280,7 +279,7 @@ async def convert_mp4_to_wav_and_transcribe(
 
                 # Step 3: Upload WAV file back to MinIO
                 wav_full_path = f"{folder}/{wav_filename}" if folder else wav_filename
-                logger.info(f"Uploading WAV file to MinIO...")
+                logger.info("Uploading WAV file to MinIO...")
                 logger.info(f"  Source: {temp_wav_path}")
                 logger.info(f"  Destination: {wav_full_path}")
                 logger.info(f"  Bucket: {minio_service.bucket_name}")
@@ -301,13 +300,13 @@ async def convert_mp4_to_wav_and_transcribe(
                     filename=wav_filename,
                     metadata=metadata,
                 ):
-                    logger.error(f"Failed to upload WAV file to MinIO!")
+                    logger.error("Failed to upload WAV file to MinIO!")
                     logger.error(f"  Attempted to upload to: {wav_full_path}")
                     logger.error(f"  In bucket: {minio_service.bucket_name}")
                     logger.error(f"  From local path: {temp_wav_path}")
                     return False
 
-                logger.success(f"WAV file uploaded successfully!")
+                logger.success("WAV file uploaded successfully!")
                 logger.success(f"  Uploaded to: {wav_full_path}")
                 logger.success(f"  In bucket: {minio_service.bucket_name}")
                 logger.info(f"  File size: {wav_size:,} bytes")
@@ -337,7 +336,7 @@ async def convert_mp4_to_wav_and_transcribe(
             txt_full_path = f"{folder}/{txt_filename}" if folder else txt_filename
 
             if not file_status["txt"]:
-                logger.info(f"Starting transcription of WAV file...")
+                logger.info("Starting transcription of WAV file...")
                 logger.info(f"  Source WAV: {temp_wav_path}")
                 logger.info(f"  Output TXT will be uploaded to: {txt_full_path}")
 
@@ -363,7 +362,7 @@ async def convert_mp4_to_wav_and_transcribe(
                     )
 
                     # Step 5: Upload TXT file to MinIO
-                    logger.info(f"Uploading TXT file to MinIO...")
+                    logger.info("Uploading TXT file to MinIO...")
                     logger.info(f"  Source: {transcription_output_path}")
                     logger.info(f"  Destination: {txt_full_path}")
                     logger.info(f"  Bucket: {minio_service.bucket_name}")
@@ -396,13 +395,13 @@ async def convert_mp4_to_wav_and_transcribe(
                     )
 
                     if not success:
-                        logger.error(f"Failed to upload TXT file to MinIO!")
+                        logger.error("Failed to upload TXT file to MinIO!")
                         logger.error(f"  Attempted to upload to: {txt_full_path}")
                         logger.error(f"  In bucket: {minio_service.bucket_name}")
                         logger.error(f"  From local path: {transcription_output_path}")
                         return False
 
-                    logger.success(f"TXT file uploaded successfully!")
+                    logger.success("TXT file uploaded successfully!")
                     logger.success(f"  Uploaded to: {txt_full_path}")
                     logger.success(f"  In bucket: {minio_service.bucket_name}")
                     logger.info(f"  File size: {txt_size:,} bytes")
@@ -435,7 +434,7 @@ async def convert_mp4_to_wav_and_transcribe(
             )
 
             if not file_status["analysis"]:
-                logger.info(f"Starting analysis of transcription...")
+                logger.info("Starting analysis of transcription...")
                 logger.info(f"  Source transcription: {transcription_output_path}")
                 logger.info(
                     f"  Output analysis will be uploaded to: {analysis_full_path}"
@@ -459,7 +458,7 @@ async def convert_mp4_to_wav_and_transcribe(
                     logger.success(f"Analysis completed: {analysis_output_path}")
 
                     # Step 7: Upload analysis TXT file to MinIO
-                    logger.info(f"Uploading analysis file to MinIO...")
+                    logger.info("Uploading analysis file to MinIO...")
                     logger.info(f"  Source: {analysis_output_path}")
                     logger.info(f"  Destination: {analysis_full_path}")
                     logger.info(f"  Bucket: {minio_service.bucket_name}")
@@ -492,13 +491,13 @@ async def convert_mp4_to_wav_and_transcribe(
                     )
 
                     if not success:
-                        logger.error(f"Failed to upload analysis file to MinIO!")
+                        logger.error("Failed to upload analysis file to MinIO!")
                         logger.error(f"  Attempted to upload to: {analysis_full_path}")
                         logger.error(f"  In bucket: {minio_service.bucket_name}")
                         logger.error(f"  From local path: {analysis_output_path}")
                         return False
 
-                    logger.success(f"Analysis file uploaded successfully!")
+                    logger.success("Analysis file uploaded successfully!")
                     logger.success(f"  Uploaded to: {analysis_full_path}")
                     logger.success(f"  In bucket: {minio_service.bucket_name}")
                     logger.info(f"  File size: {analysis_size:,} bytes")
@@ -522,7 +521,7 @@ async def convert_mp4_to_wav_and_transcribe(
             )
 
             if not file_status["linkedin"]:
-                logger.info(f"Starting LinkedIn post generation...")
+                logger.info("Starting LinkedIn post generation...")
                 logger.info(f"  Source transcription: {transcription_output_path}")
                 logger.info(
                     f"  Output LinkedIn post will be uploaded to: {linkedin_full_path}"
@@ -551,7 +550,7 @@ async def convert_mp4_to_wav_and_transcribe(
                     )
 
                     # Step 9: Upload LinkedIn post TXT file to MinIO
-                    logger.info(f"Uploading LinkedIn post file to MinIO...")
+                    logger.info("Uploading LinkedIn post file to MinIO...")
                     logger.info(f"  Source: {linkedin_output_path}")
                     logger.info(f"  Destination: {linkedin_full_path}")
                     logger.info(f"  Bucket: {minio_service.bucket_name}")
@@ -585,13 +584,13 @@ async def convert_mp4_to_wav_and_transcribe(
                     )
 
                     if not success:
-                        logger.error(f"Failed to upload LinkedIn post file to MinIO!")
+                        logger.error("Failed to upload LinkedIn post file to MinIO!")
                         logger.error(f"  Attempted to upload to: {linkedin_full_path}")
                         logger.error(f"  In bucket: {minio_service.bucket_name}")
                         logger.error(f"  From local path: {linkedin_output_path}")
                         return False
 
-                    logger.success(f"LinkedIn post file uploaded successfully!")
+                    logger.success("LinkedIn post file uploaded successfully!")
                     logger.success(f"  Uploaded to: {linkedin_full_path}")
                     logger.success(f"  In bucket: {minio_service.bucket_name}")
                     logger.info(f"  File size: {linkedin_size:,} bytes")

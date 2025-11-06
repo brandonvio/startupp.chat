@@ -41,7 +41,7 @@ class TranscriptionService:
         self.device = device
         self.compute_type = compute_type
         self.beam_size = beam_size
-        
+
         # Load model immediately during initialization
         logger.info(f"Loading Whisper model: {default_model_size}")
         self._model = WhisperModel(
@@ -159,7 +159,6 @@ class TranscriptionService:
 
 
 class PersonaTranscriptionService:
-
     def __init__(
         self,
         default_model_size: str = "medium",
@@ -195,28 +194,30 @@ class PersonaTranscriptionService:
         logger.info(f"CUDA devices available: {torch.cuda.device_count()}")
         logger.info(f"Current CUDA device: {torch.cuda.current_device()}")
         logger.info(f"CUDA device name: {torch.cuda.get_device_name()}")
-        
+
         # Pre-load WhisperX model during initialization
         logger.info(f"Loading WhisperX model: {default_model_size}")
         try:
             # Test CUDA operations first
             test_tensor = torch.randn(10, 10).cuda()
-            logger.debug(f"✓ CUDA tensor creation successful on device: {test_tensor.device}")
+            logger.debug(
+                f"✓ CUDA tensor creation successful on device: {test_tensor.device}"
+            )
             del test_tensor
             torch.cuda.empty_cache()
-            
+
             # Load WhisperX model - MUST be on GPU
             self._whisperx_model = whisperx.load_model(
                 default_model_size, self.device, compute_type=self.compute_type
             )
             logger.success("✓ WhisperX model loaded successfully on GPU during init")
-            
+
         except Exception as e:
             raise RuntimeError(f"Failed to load WhisperX model on GPU during init: {e}")
-        
+
         # Pre-load alignment models for common languages
         self._align_models = {}
-        
+
         # Pre-load diarization model during initialization
         logger.info("Loading speaker diarization model...")
         try:
@@ -229,12 +230,13 @@ class PersonaTranscriptionService:
             except AttributeError:
                 # Fall back to pyannote Pipeline
                 from pyannote.audio import Pipeline
+
                 self._diarization_model = Pipeline.from_pretrained(
                     "pyannote/speaker-diarization-3.1", use_auth_token=self.hf_token
                 )
                 self._diarization_model.to(torch.device(self.device))
                 logger.success("✓ PyAnnote diarization pipeline loaded successfully")
-                
+
         except Exception as e:
             raise RuntimeError(f"Failed to load diarization model during init: {e}")
 
@@ -281,7 +283,7 @@ class PersonaTranscriptionService:
             else:
                 logger.debug(f"Reusing cached alignment model for language: {language}")
                 model_a, metadata = self._align_models[language]
-            
+
             result = whisperx.align(
                 result["segments"],
                 model_a,
@@ -299,17 +301,19 @@ class PersonaTranscriptionService:
         logger.info("Step 4: Performing speaker diarization on GPU...")
         try:
             # Use pre-loaded diarization model
-            if hasattr(self._diarization_model, '__call__'):
+            if hasattr(self._diarization_model, "__call__"):
                 # WhisperX DiarizationPipeline or PyAnnote Pipeline
-                if 'DiarizationPipeline' in str(type(self._diarization_model)):
+                if "DiarizationPipeline" in str(type(self._diarization_model)):
                     diarize_segments = self._diarization_model(audio)
                 else:
                     # PyAnnote pipeline - needs audio file path
                     diarize_segments = self._diarization_model(audio_path)
             else:
                 raise RuntimeError("Invalid diarization model loaded")
-            
-            logger.success("✓ Speaker diarization completed on GPU using pre-loaded model")
+
+            logger.success(
+                "✓ Speaker diarization completed on GPU using pre-loaded model"
+            )
 
         except Exception as e:
             raise RuntimeError(f"Failed to perform diarization on GPU: {e}")

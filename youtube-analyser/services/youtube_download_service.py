@@ -17,7 +17,7 @@ class YouTubeDownloadService:
         default_output_path: str = "downloads",
         default_format: str = "bv*+ba/best",
         minio_folder: str = "downloads",
-        cleanup_local: bool = True
+        cleanup_local: bool = True,
     ):
         """
         Initialize the YouTube download service.
@@ -51,7 +51,7 @@ class YouTubeDownloadService:
         output_path: Optional[str] = None,
         format_selector: Optional[str] = None,
         save_metadata: bool = True,
-        channel_subfolder: Optional[str] = None
+        channel_subfolder: Optional[str] = None,
     ) -> Dict[str, str]:
         """
         Downloads a YouTube video by ID using yt-dlp.
@@ -90,20 +90,26 @@ class YouTubeDownloadService:
         metadata_filename = f"{video_id}.json"
 
         video_exists = self.minio_service.object_exists(minio_path, video_filename)
-        metadata_exists = self.minio_service.object_exists(minio_path, metadata_filename)
+        metadata_exists = self.minio_service.object_exists(
+            minio_path, metadata_filename
+        )
 
         if video_exists and metadata_exists:
-            logger.info(f"⏭️  Skipping {video_id} - files already exist in Minio storage")
+            logger.info(
+                f"⏭️  Skipping {video_id} - files already exist in Minio storage"
+            )
             video_info = self.minio_service.get_object_info(minio_path, video_filename)
             if video_info:
-                logger.info(f"☁️  Video: {video_info['object_name']} ({video_info['size'] / 1024 / 1024:.1f} MB)")
+                logger.info(
+                    f"☁️  Video: {video_info['object_name']} ({video_info['size'] / 1024 / 1024:.1f} MB)"
+                )
             logger.info(f"☁️  Metadata: {minio_path}/{metadata_filename}")
 
             return {
                 "skipped": True,
                 "already_exists_in_minio": True,
                 "minio_video_path": f"{minio_path}/{video_filename}",
-                "minio_metadata_path": f"{minio_path}/{metadata_filename}"
+                "minio_metadata_path": f"{minio_path}/{metadata_filename}",
             }
 
         # Create video-specific subdirectory
@@ -132,6 +138,10 @@ class YouTubeDownloadService:
             "quiet": False,
             "no_warnings": False,
             "concurrent_fragment_downloads": 5,
+            # Anti-bot bypass options
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "referer": "https://www.youtube.com/",
+            "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
         }
 
         try:
@@ -168,7 +178,7 @@ class YouTubeDownloadService:
                     "title": info.get("title", ""),
                     "uploader": info.get("uploader", ""),
                     "duration": str(info.get("duration", 0)),
-                }
+                },
             )
 
             result["minio_video_uploaded"] = video_uploaded
@@ -183,12 +193,14 @@ class YouTubeDownloadService:
                     metadata={
                         "video-id": video_id,
                         "file-type": "metadata",
-                    }
+                    },
                 )
 
                 result["minio_metadata_uploaded"] = metadata_uploaded
                 result["minio_metadata_path"] = f"{minio_path}/{metadata_path.name}"
-                logger.success(f"✅ Metadata uploaded to Minio: {result['minio_metadata_path']}")
+                logger.success(
+                    f"✅ Metadata uploaded to Minio: {result['minio_metadata_path']}"
+                )
 
             # Clean up local files
             if self.cleanup_local:
@@ -271,13 +283,16 @@ class YouTubeDownloadService:
                 videos = []
                 for entry in playlist_info["entries"]:
                     if entry:  # Some entries might be None if video is unavailable
-                        videos.append({
-                            "id": entry.get("id"),
-                            "title": entry.get("title", "Unknown"),
-                            "url": entry.get("url") or f"https://www.youtube.com/watch?v={entry.get('id')}",
-                            "duration": entry.get("duration"),
-                            "uploader": entry.get("uploader"),
-                        })
+                        videos.append(
+                            {
+                                "id": entry.get("id"),
+                                "title": entry.get("title", "Unknown"),
+                                "url": entry.get("url")
+                                or f"https://www.youtube.com/watch?v={entry.get('id')}",
+                                "duration": entry.get("duration"),
+                                "uploader": entry.get("uploader"),
+                            }
+                        )
 
                 logger.success(f"Found {len(videos)} videos in playlist")
                 return videos
@@ -293,7 +308,7 @@ class YouTubeDownloadService:
         format_selector: Optional[str] = None,
         save_metadata: bool = True,
         max_videos: Optional[int] = None,
-        channel_subfolder: Optional[str] = None
+        channel_subfolder: Optional[str] = None,
     ) -> List[Dict[str, str]]:
         """
         Download all videos from a YouTube playlist.
@@ -320,7 +335,9 @@ class YouTubeDownloadService:
             results = []
             for idx, video in enumerate(videos, 1):
                 video_id = video["id"]
-                logger.info(f"\n[{idx}/{len(videos)}] Downloading: {video['title']} ({video_id})")
+                logger.info(
+                    f"\n[{idx}/{len(videos)}] Downloading: {video['title']} ({video_id})"
+                )
 
                 try:
                     result = self.download_video(
@@ -328,28 +345,34 @@ class YouTubeDownloadService:
                         output_path=output_path,
                         format_selector=format_selector,
                         save_metadata=save_metadata,
-                        channel_subfolder=channel_subfolder
+                        channel_subfolder=channel_subfolder,
                     )
-                    results.append({
-                        "video_id": video_id,
-                        "title": video["title"],
-                        "status": "success",
-                        "paths": result
-                    })
+                    results.append(
+                        {
+                            "video_id": video_id,
+                            "title": video["title"],
+                            "status": "success",
+                            "paths": result,
+                        }
+                    )
 
                 except Exception as e:
                     logger.error(f"Failed to download {video_id}: {str(e)}")
-                    results.append({
-                        "video_id": video_id,
-                        "title": video["title"],
-                        "status": "failed",
-                        "error": str(e)
-                    })
+                    results.append(
+                        {
+                            "video_id": video_id,
+                            "title": video["title"],
+                            "status": "failed",
+                            "error": str(e),
+                        }
+                    )
 
             # Summary
             successful = sum(1 for r in results if r["status"] == "success")
             failed = sum(1 for r in results if r["status"] == "failed")
-            logger.info(f"\nPlaylist download complete: {successful} successful, {failed} failed")
+            logger.info(
+                f"\nPlaylist download complete: {successful} successful, {failed} failed"
+            )
 
             return results
 

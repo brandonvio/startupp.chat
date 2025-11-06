@@ -166,11 +166,15 @@ class OllamaAnalysisService:
 
             # Fallback to manual validation if LLM response is empty or malformed
             if not validation_response or len(validation_response) < 10:
-                logger.warning("LLM validation response is empty/invalid, using manual validation")
+                logger.warning(
+                    "LLM validation response is empty/invalid, using manual validation"
+                )
                 return self._manual_validate_post(post_content)
 
             # Parse the validation response more robustly
-            lines = [line.strip() for line in validation_response.split("\n") if line.strip()]
+            lines = [
+                line.strip() for line in validation_response.split("\n") if line.strip()
+            ]
             meets_requirements = False
             improvement_guidance = ""
             character_count = None
@@ -179,12 +183,16 @@ class OllamaAnalysisService:
             for line in lines:
                 if "MEETS_REQUIREMENTS:" in line:
                     meets_requirements = "YES" in line.upper()
-                    logger.info(f"Parsed MEETS_REQUIREMENTS: {'YES' if meets_requirements else 'NO'}")
+                    logger.info(
+                        f"Parsed MEETS_REQUIREMENTS: {'YES' if meets_requirements else 'NO'}"
+                    )
                 elif "IMPROVEMENT_GUIDANCE:" in line:
                     parts = line.split(":", 1)
                     if len(parts) > 1:
                         improvement_guidance = parts[1].strip()
-                        logger.info(f"Parsed IMPROVEMENT_GUIDANCE: {improvement_guidance}")
+                        logger.info(
+                            f"Parsed IMPROVEMENT_GUIDANCE: {improvement_guidance}"
+                        )
                 elif "CHARACTER_COUNT:" in line:
                     parts = line.split(":", 1)
                     if len(parts) > 1:
@@ -192,7 +200,9 @@ class OllamaAnalysisService:
                             character_count = int(parts[1].strip())
                             logger.info(f"Parsed CHARACTER_COUNT: {character_count}")
                         except ValueError:
-                            logger.warning(f"Could not parse character count from: {parts[1]}")
+                            logger.warning(
+                                f"Could not parse character count from: {parts[1]}"
+                            )
                 elif "HASHTAG_COUNT:" in line:
                     parts = line.split(":", 1)
                     if len(parts) > 1:
@@ -200,11 +210,15 @@ class OllamaAnalysisService:
                             hashtag_count = int(parts[1].strip())
                             logger.info(f"Parsed HASHTAG_COUNT: {hashtag_count}")
                         except ValueError:
-                            logger.warning(f"Could not parse hashtag count from: {parts[1]}")
+                            logger.warning(
+                                f"Could not parse hashtag count from: {parts[1]}"
+                            )
 
             # If we couldn't parse critical values, fall back to manual validation
             if character_count is None or hashtag_count is None:
-                logger.warning("Could not parse LLM validation response, using manual validation")
+                logger.warning(
+                    "Could not parse LLM validation response, using manual validation"
+                )
                 return self._manual_validate_post(post_content)
 
             # Log detailed validation results
@@ -213,16 +227,22 @@ class OllamaAnalysisService:
                 logger.warning(f"   📏 Character count: {character_count} (limit: 290)")
                 logger.warning(f"   #️⃣  Hashtag count: {hashtag_count} (minimum: 2)")
                 logger.warning(f"   💬 Feedback: {improvement_guidance}")
-                
+
                 # Add specific failure reasons if parsing worked
                 failure_reasons = []
                 if character_count and character_count > 290:
-                    failure_reasons.append(f"exceeds character limit ({character_count}/290)")
+                    failure_reasons.append(
+                        f"exceeds character limit ({character_count}/290)"
+                    )
                 if hashtag_count is not None and hashtag_count < 2:
-                    failure_reasons.append(f"insufficient hashtags ({hashtag_count}/2 minimum)")
-                
+                    failure_reasons.append(
+                        f"insufficient hashtags ({hashtag_count}/2 minimum)"
+                    )
+
                 if failure_reasons:
-                    logger.warning(f"   🚨 Specific issues: {', '.join(failure_reasons)}")
+                    logger.warning(
+                        f"   🚨 Specific issues: {', '.join(failure_reasons)}"
+                    )
             else:
                 logger.success("✅ VALIDATION PASSED - Post meets all requirements")
                 logger.info(f"   📏 Character count: {character_count}/290")
@@ -231,32 +251,34 @@ class OllamaAnalysisService:
             return meets_requirements, improvement_guidance
 
         except Exception as e:
-            logger.error(f"LLM validation failed: {str(e)}, falling back to manual validation")
+            logger.error(
+                f"LLM validation failed: {str(e)}, falling back to manual validation"
+            )
             return self._manual_validate_post(post_content)
 
     def _manual_validate_post(self, post_content: str) -> tuple[bool, str]:
         """
         Manual validation as fallback when LLM validation fails.
-        
+
         Args:
             post_content (str): The post content to validate.
-            
+
         Returns:
             tuple[bool, str]: (meets_requirements, improvement_guidance)
         """
         logger.info("🔧 Using manual validation")
-        
+
         # Count characters and hashtags
         character_count = len(post_content)
-        hashtag_count = post_content.count('#')
-        
-        logger.info(f"Manual validation results:")
+        hashtag_count = post_content.count("#")
+
+        logger.info("Manual validation results:")
         logger.info(f"   📏 Character count: {character_count}/290")
         logger.info(f"   #️⃣  Hashtag count: {hashtag_count}")
-        
+
         # Check requirements
         meets_requirements = character_count <= 290 and hashtag_count >= 2
-        
+
         if meets_requirements:
             logger.success("✅ MANUAL VALIDATION PASSED")
             return True, "APPROVED"
@@ -267,7 +289,7 @@ class OllamaAnalysisService:
                 issues.append(f"Too long ({character_count}/290 characters)")
             if hashtag_count < 2:
                 issues.append(f"Need more hashtags ({hashtag_count}/2 minimum)")
-            
+
             feedback = f"Manual validation failed: {', '.join(issues)}"
             logger.warning(f"❌ MANUAL VALIDATION FAILED: {feedback}")
             return False, feedback
@@ -368,7 +390,7 @@ class OllamaAnalysisService:
 
             # Write analysis to file
             with open(analysis_file, "w", encoding="utf-8") as f:
-                f.write(f"# Video Analysis Report\n")
+                f.write("# Video Analysis Report\n")
                 f.write(f"**Video ID:** {video_id or 'Unknown'}\n")
                 f.write(
                     f"**Transcription File:** {os.path.basename(transcription_file)}\n"
@@ -580,9 +602,10 @@ class OllamaAnalysisService:
                 )
 
                 # Validate the post with LLM
-                meets_requirements, validation_feedback = (
-                    await self._validate_bluesky_post(post_content)
-                )
+                (
+                    meets_requirements,
+                    validation_feedback,
+                ) = await self._validate_bluesky_post(post_content)
 
                 if meets_requirements:
                     logger.success(
@@ -597,12 +620,14 @@ class OllamaAnalysisService:
 
                     if iteration == max_iterations:
                         logger.warning(
-                            f"Max iterations reached. Using last generated post with truncation if needed."
+                            "Max iterations reached. Using last generated post with truncation if needed."
                         )
                         # Apply basic truncation if over 290 characters
                         if len(post_content) > 290:
                             post_content = post_content[:287] + "..."
-                            logger.info(f"Truncated post to {len(post_content)} characters")
+                            logger.info(
+                                f"Truncated post to {len(post_content)} characters"
+                            )
                         return post_content
 
             # Should not reach here, but just in case

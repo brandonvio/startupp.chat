@@ -60,12 +60,12 @@ def init_minio_service() -> MinIOService:
     minio_config = get_minio_config()
 
     minio_service = MinIOService(
-        endpoint=minio_config['endpoint'],
-        access_key=minio_config['access_key'],
-        secret_key=minio_config['secret_key'],
-        bucket_name=minio_config['bucket_name'],
-        secure=minio_config['secure'],
-        region=minio_config['region']
+        endpoint=minio_config["endpoint"],
+        access_key=minio_config["access_key"],
+        secret_key=minio_config["secret_key"],
+        bucket_name=minio_config["bucket_name"],
+        secure=minio_config["secure"],
+        region=minio_config["region"],
     )
     logger.success(f"✅ Connected to Minio at {minio_config['endpoint']}")
     return minio_service
@@ -88,43 +88,43 @@ Format Examples:
   bestvideo[height<=720]+bestaudio  720p or lower
   bestvideo[height<=1080]+bestaudio 1080p or lower
   bestaudio                       Audio only
-        """
+        """,
     )
 
     parser.add_argument(
-        "channel",
-        help="YouTube channel handle (@channelname) or channel ID (UCxxxxxx)"
+        "channel", help="YouTube channel handle (@channelname) or channel ID (UCxxxxxx)"
     )
 
     parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         default="downloads",
-        help="Output directory (default: downloads)"
+        help="Output directory (default: downloads)",
     )
 
     parser.add_argument(
-        "-f", "--format",
+        "-f",
+        "--format",
         default="bv*+ba/best",
-        help="Format selector for yt-dlp (default: bv*+ba/best)"
+        help="Format selector for yt-dlp (default: bv*+ba/best)",
     )
 
     parser.add_argument(
-        "-m", "--max",
+        "-m",
+        "--max",
         type=int,
         default=None,
-        help="Maximum number of videos to download (default: all)"
+        help="Maximum number of videos to download (default: all)",
     )
 
     parser.add_argument(
-        "--no-metadata",
-        action="store_true",
-        help="Don't save metadata JSON files"
+        "--no-metadata", action="store_true", help="Don't save metadata JSON files"
     )
 
     parser.add_argument(
         "--save-results",
         action="store_true",
-        help="Save download results to a JSON file"
+        help="Save download results to a JSON file",
     )
 
     args = parser.parse_args()
@@ -166,7 +166,9 @@ Format Examples:
             if len(parts) > 1:
                 channel_subfolder = parts[1].split("/")[0]
     else:
-        logger.error("Invalid channel format. Use @handle, channel ID (UCxxxxxx), or full URL")
+        logger.error(
+            "Invalid channel format. Use @handle, channel ID (UCxxxxxx), or full URL"
+        )
         sys.exit(1)
 
     try:
@@ -178,7 +180,7 @@ Format Examples:
         service = YouTubeDownloadService(
             minio_service=minio_service,
             default_output_path=args.output,
-            default_format=args.format
+            default_format=args.format,
         )
 
         logger.info(f"Channel URL: {channel_url}")
@@ -195,14 +197,14 @@ Format Examples:
             format_selector=args.format,
             save_metadata=not args.no_metadata,
             max_videos=args.max,
-            channel_subfolder=channel_subfolder
+            channel_subfolder=channel_subfolder,
         )
 
         # Display summary
         successful = [r for r in results if r["status"] == "success"]
         failed = [r for r in results if r["status"] == "failed"]
 
-        logger.success(f"\nChannel download complete!")
+        logger.success("\nChannel download complete!")
         logger.success(f"Total videos: {len(results)}")
         logger.success(f"Successful: {len(successful)}")
 
@@ -210,7 +212,9 @@ Format Examples:
             logger.warning(f"Failed: {len(failed)}")
             logger.warning("\nFailed videos:")
             for r in failed:
-                logger.warning(f"  - {r['title']} ({r['video_id']}): {r.get('error', 'Unknown error')}")
+                logger.warning(
+                    f"  - {r['title']} ({r['video_id']}): {r.get('error', 'Unknown error')}"
+                )
 
         # Save results if requested
         if args.save_results:
