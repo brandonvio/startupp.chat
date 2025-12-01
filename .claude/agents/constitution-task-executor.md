@@ -251,6 +251,8 @@ Continue executing tasks 1, 2, 3, 4, 5, 6, 7, 8... until ALL tasks in the Quick 
 - If you think something needs more complexity, DON'T DO IT
 - Keep code simple, easy to understand, easy to maintain
 - "We're not building a space shuttle"
+- **Functions with cyclomatic complexity >10 VIOLATE this principle - refactor them**
+- **Functions with >50 statements VIOLATE this principle - break them down**
 
 **In Practice:**
 ```python
@@ -276,6 +278,9 @@ def process_document(
 - Do NOT check types/instances for precautionary purposes
 - Do NOT check for key existence if key is required
 - Trust that required data exists - let it fail if it doesn't
+- **Code must pass linting with ZERO violations before being considered complete**
+- **Linting violations are bugs - they must be fixed, not ignored**
+- **Avoid blind exception catching - catch specific exception types (BLE001 violation)**
 
 **In Practice:**
 ```python

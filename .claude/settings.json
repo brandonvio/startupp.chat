@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:*)",
+      "Bash(tree:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ruff check:*)",
+      "Bash(python:*)",
+      "Bash(source:*)",
+      "Bash(ruff format:*)",
+      "Bash(git pull:*)",
+      "Bash(python3 -m pytest:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(gh:*)",
+      "Bash(uv:*)",
+      "Bash(test:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

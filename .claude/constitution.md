@@ -9,6 +9,8 @@
 - Always keep it simple
 - We aren't building a space shuttle
 - Keep things simple, easy to understand, and easy to maintain
+- **Functions with cyclomatic complexity >10 violate this principle - refactor them**
+- **Functions with >50 statements violate this principle - break them down**
 
 ### II. Fail Fast Philosophy (NON-NEGOTIABLE)
 **Systems should fail immediately when assumptions are violated.**
@@ -17,6 +19,9 @@
 - If something is not the right type or instance, the function needs to fail
 - Do not check for existence of keys if the key is necessary to the process - the system should fail
 - Trust that required data exists - let it fail if it doesn't
+- **Code must pass linting with ZERO violations before being considered complete**
+- **Linting violations are bugs - they must be fixed, not ignored**
+- **Avoid blind exception catching (catch specific exception types instead)**
 
 ### III. Comprehensive Type Safety (NON-NEGOTIABLE)
 **Use type hints everywhere possible.**
@@ -68,7 +73,19 @@ Use appropriate mocking strategies in unit tests to ensure the system will work 
 - No defensive programming unless explicitly requested
 - Let systems fail fast and fail hard
 - Clean up verbose comments and prioritize updating function docstrings
-- Format files with appropriate linting
+- **Format files with ruff format**
+- **ALL ruff check violations must be resolved - zero tolerance policy**
+  - Run `ruff format` to auto-format code
+  - Run `ruff check --fix` to auto-fix correctable issues
+  - Run `ruff check` to identify remaining violations
+  - Manually resolve ALL remaining violations:
+    - Complexity violations (C901, PLR0915) → refactor into smaller functions
+    - Blind exception catching (BLE001) → use specific exception types
+    - Builtin shadowing (A002) → rename variables
+    - Performance issues (PERF*) → apply optimizations
+    - Style violations (SIM*, FBT*) → fix patterns
+  - Re-run `ruff check` until ZERO violations remain
+  - Code is NOT complete until linting is clean
 
 ### Testing Requirements
 - Unit tests must use appropriate mocking strategies for external services
@@ -93,5 +110,8 @@ Use appropriate mocking strategies in unit tests to ensure the system will work 
 - Services that create dependencies inside constructors must be refactored
 - Services with Optional dependencies or default parameter values must be refactored
 - SOLID violations indicate architectural debt and must be addressed
+- **Any ruff check violations must be resolved before code is considered complete**
+- **Complexity violations (>10 cyclomatic complexity) indicate violation of Principle I**
+- **Blind exception catching indicates violation of Principle II**
 
-**Version**: 3.1.0 | **Ratified**: 2025-01-17 | **Last Amended**: 2025-11-05
+**Version**: 3.2.0 | **Ratified**: 2025-01-17 | **Last Amended**: 2025-01-08

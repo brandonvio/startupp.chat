@@ -246,6 +246,8 @@ All 7 principles checked on every iteration:
 6. **Dependency Injection** - All deps REQUIRED (no Optional, no defaults)
 7. **SOLID Principles** - All five strictly applied
 
+**Note**: See @.claude/constitution.md for complete details including linting requirements
+
 ### Max Iterations
 
 Default: 5 iterations
