@@ -2,6 +2,7 @@ from typing import Optional, List, Dict
 from faster_whisper import WhisperModel
 from loguru import logger
 import os
+import sys
 import torch
 import whisperx
 import logging
@@ -207,8 +208,10 @@ class PersonaTranscriptionService:
             torch.cuda.empty_cache()
 
             # Load WhisperX model - MUST be on GPU
+            # NOTE: Passing language="en" to pre-create tokenizer and avoid segfault
+            # in detect_language caused by pyannote.audio/torch version mismatch
             self._whisperx_model = whisperx.load_model(
-                default_model_size, self.device, compute_type=self.compute_type
+                default_model_size, self.device, compute_type=self.compute_type, language="en"
             )
             logger.success("✓ WhisperX model loaded successfully on GPU during init")
 
@@ -260,6 +263,7 @@ class PersonaTranscriptionService:
         logger.info("Step 2: Loading and transcribing audio on GPU...")
         try:
             audio = whisperx.load_audio(audio_path)
+            logger.debug(f"  - Audio loaded, length: {len(audio)} samples")
             result = model.transcribe(audio, batch_size=self.batch_size)
             logger.success("✓ Audio transcribed successfully on GPU")
         except Exception as e:
@@ -306,8 +310,12 @@ class PersonaTranscriptionService:
                 if "DiarizationPipeline" in str(type(self._diarization_model)):
                     diarize_segments = self._diarization_model(audio)
                 else:
-                    # PyAnnote pipeline - needs audio file path
-                    diarize_segments = self._diarization_model(audio_path)
+                    # PyAnnote pipeline - needs waveform tensor, not file path
+                    # Convert numpy audio array to torch tensor in PyAnnote format
+                    # whisperx.load_audio returns mono audio at 16kHz as float32 numpy array
+                    waveform = torch.from_numpy(audio).unsqueeze(0)  # Add channel dimension
+                    pyannote_input = {"waveform": waveform, "sample_rate": 16000}
+                    diarize_segments = self._diarization_model(pyannote_input)
             else:
                 raise RuntimeError("Invalid diarization model loaded")
 
@@ -397,8 +405,10 @@ class PersonaTranscriptionService:
             logger.info(f"Starting persona transcription of: {file_path}")
 
             # Use WhisperX implementation for transcription and diarization
+            # NOTE: Using "en" instead of "auto" to avoid segfault in language detection
+            # caused by pyannote.audio/torch version mismatch
             transcription_with_speakers = self._transcribe_and_diarize_whisperx(
-                file_path, language="auto"
+                file_path, language="en"
             )
 
             # Generate output filename
