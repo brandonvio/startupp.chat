@@ -23,4 +23,5 @@ dependencies = [
     "whisperx>=3.4.2",
     "soundfile>=0.13.1",
     "qdrant-client>=1.15.1",
+    "gradio>=6.0.2",
 ]

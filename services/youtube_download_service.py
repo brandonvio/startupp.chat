@@ -8,6 +8,11 @@ from loguru import logger
 from services.minio_service import MinIOService
 
 
+def _sanitize_metadata_value(value: str) -> str:
+    """Sanitize metadata value to ASCII-only characters for S3/Minio compatibility."""
+    return value.encode("ascii", errors="ignore").decode("ascii")
+
+
 class YouTubeDownloadService:
     """Service for downloading YouTube videos using yt-dlp with optional Minio storage."""
 
@@ -169,21 +174,24 @@ class YouTubeDownloadService:
             # Upload to Minio
             logger.info("\n📤 Uploading to Minio storage...")
 
-            # Upload video file
+            # Upload video file (sanitize metadata for ASCII-only S3 compatibility)
             video_uploaded = self.minio_service.save_file(
                 file_path=str(video_path),
                 folder=minio_path,
                 metadata={
                     "video-id": video_id,
-                    "title": info.get("title", ""),
-                    "uploader": info.get("uploader", ""),
+                    "title": _sanitize_metadata_value(info.get("title", "")),
+                    "uploader": _sanitize_metadata_value(info.get("uploader", "")),
                     "duration": str(info.get("duration", 0)),
                 },
             )
 
             result["minio_video_uploaded"] = video_uploaded
             result["minio_video_path"] = f"{minio_path}/{video_path.name}"
-            logger.success(f"✅ Video uploaded to Minio: {result['minio_video_path']}")
+            if video_uploaded:
+                logger.success(f"✅ Video uploaded to Minio: {result['minio_video_path']}")
+            else:
+                logger.error(f"❌ Failed to upload video to Minio: {result['minio_video_path']}")
 
             # Upload metadata file if it exists
             if metadata_path and metadata_path.exists():
@@ -198,9 +206,14 @@ class YouTubeDownloadService:
 
                 result["minio_metadata_uploaded"] = metadata_uploaded
                 result["minio_metadata_path"] = f"{minio_path}/{metadata_path.name}"
-                logger.success(
-                    f"✅ Metadata uploaded to Minio: {result['minio_metadata_path']}"
-                )
+                if metadata_uploaded:
+                    logger.success(
+                        f"✅ Metadata uploaded to Minio: {result['minio_metadata_path']}"
+                    )
+                else:
+                    logger.error(
+                        f"❌ Failed to upload metadata to Minio: {result['minio_metadata_path']}"
+                    )
 
             # Clean up local files
             if self.cleanup_local:
